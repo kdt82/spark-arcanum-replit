@@ -589,28 +589,16 @@ export class MTGJsonService {
   }
   
   /**
-   * Complete database update from MTGJSON
-   * This downloads and processes AllPrintings.json to get all 31,000+ cards
+   * Complete database update from MTGJSON - returns detailed results
    */
-  public async completeCardDatabaseUpdate(): Promise<{success: boolean, message: string}> {
+  public async completeCardDatabaseUpdateWithResults(): Promise<{success: boolean, message: string}> {
     try {
-      // Download AllPrintings.json
-      const downloadSuccess = await this.downloadAllPrintingsJson();
-      if (!downloadSuccess) {
-        return { success: false, message: "Failed to download AllPrintings.json" };
-      }
-      
-      // Get path to the downloaded file
-      const __filename = fileURLToPath(import.meta.url);
-      const __dirname = path.dirname(__filename);
-      const allPrintingsPath = path.join(__dirname, '..', '..', 'data', 'AllPrintings.json');
-      
-      // Process the file to update the database
-      await this.processAllPrintingsData(allPrintingsPath);
+      // Use the existing completeCardDatabaseUpdate method
+      await this.completeCardDatabaseUpdate();
       
       return { 
         success: true, 
-        message: "Successfully downloaded and processed AllPrintings.json. Card database has been updated with all 31,000+ cards." 
+        message: "Successfully updated card database using comprehensive MTGJSON import service." 
       };
     } catch (error) {
       console.error("Error in complete card database update:", error);
