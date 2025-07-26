@@ -229,12 +229,18 @@ async function createDatabaseTables(): Promise<void> {
     )
   `);
   
-  // Create rules table
+  // Create rules table (matching shared/schema.ts)
   await db.execute(sql`
     CREATE TABLE IF NOT EXISTS "rules" (
-      "id" varchar PRIMARY KEY DEFAULT gen_random_uuid(),
-      "rule_number" varchar NOT NULL UNIQUE,
-      "rule_text" text NOT NULL,
+      "id" serial PRIMARY KEY,
+      "chapter" varchar,
+      "section" varchar,
+      "subsection" varchar,
+      "rule_number" varchar NOT NULL,
+      "text" text NOT NULL,
+      "examples" varchar[],
+      "keywords" varchar[],
+      "related_rules" varchar[],
       "created_at" timestamp DEFAULT now(),
       "updated_at" timestamp DEFAULT now()
     )
@@ -260,6 +266,60 @@ async function createDatabaseTables(): Promise<void> {
     console.log("🎯 All database tables created successfully");
   } catch (error: any) {
     console.error("❌ Error creating database tables:", error);
+    throw error;
+  }
+}
+
+/**
+ * Fix rules table schema mismatch for Railway deployments
+ * Recreates the rules table with the correct schema if it has wrong columns
+ */
+export async function fixRulesTableSchema(): Promise<void> {
+  try {
+    console.log("🔧 Checking rules table schema...");
+    
+    // Check if rules table exists and has the correct schema
+    try {
+      await db.execute(sql`SELECT chapter FROM rules LIMIT 1`);
+      console.log("✅ Rules table schema is correct");
+      return;
+    } catch (error: any) {
+      if (error.message.includes('column "chapter" does not exist')) {
+        console.log("❌ Rules table missing 'chapter' column - recreating with correct schema...");
+        
+        // Drop the old rules table
+        await db.execute(sql`DROP TABLE IF EXISTS rules CASCADE`);
+        console.log("🗑️ Old rules table dropped");
+        
+        // Create new rules table with correct schema
+        await db.execute(sql`
+          CREATE TABLE "rules" (
+            "id" serial PRIMARY KEY,
+            "chapter" varchar,
+            "section" varchar,
+            "subsection" varchar,
+            "rule_number" varchar NOT NULL,
+            "text" text NOT NULL,
+            "examples" varchar[],
+            "keywords" varchar[],
+            "related_rules" varchar[],
+            "created_at" timestamp DEFAULT now(),
+            "updated_at" timestamp DEFAULT now()
+          )
+        `);
+        
+        // Create index on rule numbers
+        await db.execute(sql`
+          CREATE INDEX "idx_rules_number" ON "rules" ("rule_number")
+        `);
+        
+        console.log("✅ Rules table recreated with correct schema");
+      } else {
+        throw error;
+      }
+    }
+  } catch (error: any) {
+    console.error("❌ Error fixing rules table schema:", error);
     throw error;
   }
 }

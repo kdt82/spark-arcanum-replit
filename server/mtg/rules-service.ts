@@ -60,24 +60,17 @@ export class RulesService {
           console.log("✅ Chapter column verified in rules table");
         } catch (columnError: any) {
           console.error("❌ Chapter column missing:", columnError.message);
-          // Wait a moment and retry since table creation might be in progress
-          await new Promise(resolve => setTimeout(resolve, 2000));
-          try {
-            await db.execute(sql`SELECT chapter FROM rules LIMIT 1`);
-            console.log("✅ Chapter column verified after retry");
-          } catch (retryError: any) {
-            console.log("🔧 Recreating rules table with proper schema...");
-            const { initializeDatabaseSchema } = await import('../database-initializer');
-            await initializeDatabaseSchema();
-            console.log("✅ Database schema recreated");
-          }
+          console.log("🔧 Fixing rules table schema...");
+          const { fixRulesTableSchema } = await import('../database-initializer');
+          await fixRulesTableSchema();
+          console.log("✅ Rules table schema fixed");
         }
       } catch (schemaError: any) {
         console.error("❌ Rules table access issue:", schemaError.message);
-        console.log("🔧 Attempting to recreate database schema...");
-        const { initializeDatabaseSchema } = await import('../database-initializer');
-        await initializeDatabaseSchema();
-        console.log("✅ Database schema recreated");
+        console.log("🔧 Fixing rules table schema...");
+        const { fixRulesTableSchema } = await import('../database-initializer');
+        await fixRulesTableSchema();
+        console.log("✅ Rules table schema fixed");
       }
       
       // Check if rules data is already populated

@@ -4,7 +4,7 @@ import { storage } from "./storage";
 import { mtgSQLiveStorage } from "./storage-mtgsqlive";
 import { processCardData } from "./mtg/card-service";
 import { mtgJsonService } from "./mtg/mtgjson-service";
-// Rules service is now initialized sequentially in index.ts
+import { rulesService } from "./mtg/rules-service";
 import { getCardRuling } from "./openai";
 import { Card } from "@/types/card";
 import { rules as rulesTable, dbMetadata, cards } from "@shared/schema";
