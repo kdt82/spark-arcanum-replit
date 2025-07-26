@@ -210,12 +210,13 @@ export class MTGSQLiveService {
 
         let output = '';
         let errorOutput = '';
+        let processedLines = 0;
 
         psql.stdout.on('data', (data) => {
           output += data.toString();
-          importedLines++;
-          if (importedLines % 1000 === 0) {
-            console.log(`🗄️ Processed ${importedLines} database operations...`);
+          processedLines++;
+          if (processedLines % 1000 === 0) {
+            console.log(`🗄️ Processed ${processedLines} database operations...`);
           }
         });
 

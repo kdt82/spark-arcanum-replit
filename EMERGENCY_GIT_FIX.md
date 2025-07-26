@@ -17,8 +17,11 @@ git commit -m "Clean codebase without database files - v1.1.21
 ✅ Codebase-only deployment (76MB) ready for Railway
 ✅ Railway will download fresh MTGJSON data on startup"
 
-# Force push the clean branch
+# Since you're already on clean-main branch, force push it to main
 git push --force-with-lease origin clean-main:main
+
+# OR if that doesn't work, try:
+git push --force origin clean-main:main
 ```
 
 ## Method 2: Manual File Removal (if Method 1 doesn't work)
