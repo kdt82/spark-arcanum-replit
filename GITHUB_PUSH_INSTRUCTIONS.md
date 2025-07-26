@@ -11,34 +11,43 @@
 
 ## Step 1: Push to GitHub
 
+### Current Situation
+You are on the `clean-main` branch which contains the clean codebase (76MB) without database files. The `main` branch on GitHub still contains large files that prevent normal pushing.
+
+### SOLUTION: Force Push Clean Branch
+
 Since git authentication requires your credentials, run these commands in the Replit Shell:
 
 ```bash
-# IMPORTANT: Remove large files from git tracking first
+# Check current branch (should show: * clean-main)
+git branch
+
+# Check status (should show: clean working tree)
+git status
+
+# FORCE PUSH: Replace problematic main branch with clean branch
+git push --force-with-lease origin clean-main:main
+
+# If the above fails, use stronger force push:
+git push --force origin clean-main:main
+```
+
+### Why Force Push is Necessary
+- Your `clean-main` branch has completely different history than remote `main`
+- Remote `main` contains 563MB+ database files that prevent deployment
+- Force push replaces the entire remote history with your clean branch
+- Results in deployable 76MB repository without large files
+
+### Alternative: Standard Git Workflow (if force push fails)
+```bash
+# Only use if force push doesn't work
 git rm --cached -r data/ 2>/dev/null || echo "Data directory removed from tracking"
 git rm --cached data/AllPrintings.psql 2>/dev/null || echo "PostgreSQL file removed from tracking"
 git rm --cached data/AllPrintings.psql.xz 2>/dev/null || echo "Compressed file removed from tracking"
 git rm --cached data/AllPrintings.json 2>/dev/null || echo "JSON file removed from tracking"
 
-# Check current status (data files should now be untracked)
-git status
-
-# Add all changes (only codebase, no database files)
 git add .
-
-# Commit with comprehensive description
-git commit -m "v1.1.21 - MTGSQLive PostgreSQL Import + Critical Rule Enforcement
-
-✅ Fixed critical rule violation - eliminated AllPrintings.json usage
-✅ Implemented official MTGSQLive PostgreSQL schema streaming
-✅ Updated .gitignore - excludes 538MB data directory from GitHub push
-✅ Direct import from mtgjson.com/api/v5/AllPrintings.psql (563MB)
-✅ Resolved missing cards: Tifa Lockhart, Cori-Steel Cutter, Final Fantasy sets
-✅ Version-specific data display - unique flavor text per printing
-✅ Railway deployment ready - only codebase pushed, database regenerated on deploy
-✅ MTGJSON v5.2.2 with all recent Universes Beyond sets"
-
-# Push to GitHub
+git commit -m "Remove large database files from tracking - prepare for Railway deployment"
 git push origin main
 ```
 
@@ -191,4 +200,10 @@ Your Magic: The Gathering deck builder is now live with complete MTGJSON databas
 ---
 
 **Repository**: https://github.com/kdt82/spark-arcanum-replit  
-**Version**: v1.1.12 - Complete MTGJSON Schema & Railway Production Deployment
+**Version**: v1.1.21 - Railway Build Errors Fixed + Clean Git History  
+
+## Recent Fixes (v1.1.21)
+- ✅ **TypeScript Compilation Errors Fixed**: Railway deployment build now succeeds
+- ✅ **Runtime Errors Resolved**: Fixed variable scoping issues in MTGSQLive service
+- ✅ **Clean Git Branch Created**: `clean-main` branch ready for force push to replace problematic history
+- ✅ **Repository Size Reduced**: From 538MB to 76MB (deployable size)
