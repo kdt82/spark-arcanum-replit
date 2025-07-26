@@ -158,7 +158,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  // Load cards from MTGJSON API
+  // MTGSQLive-only card loading - blocks AllPrintings.json processing
   app.post("/api/cards/load-mtgjson", async (req, res) => {
     try {
       console.log("Starting MTGJSON initialization...");
@@ -200,19 +200,12 @@ export async function registerRoutes(app: Express): Promise<Server> {
         }
       }
       
-      // Start initialization in the background
-      mtgJsonService.initialize(forceRefresh)
-        .then(() => {
-          console.log("MTGJSON initialization completed successfully");
-        })
-        .catch(err => {
-          console.error("MTGJSON initialization failed:", err);
-        });
-      
-      // Return immediately since initialization can take time
-      return res.json({ 
-        message: "MTGJSON initialization started in the background", 
-        forceRefresh
+      // Block AllPrintings.json initialization - enforce MTGSQLive only
+      return res.status(400).json({ 
+        success: false,
+        message: "AllPrintings.json processing is blocked - system uses MTGSQLive PostgreSQL schema only",
+        note: "Use existing card data or MTGSQLive import methods",
+        mtgSQLiveOnly: true
       });
     } catch (error: any) {
       console.error("Error starting MTGJSON initialization:", error);
@@ -227,26 +220,15 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Complete card database update to get all 31,000+ cards
   app.post("/api/admin/complete-card-database-update", async (req, res) => {
     try {
-      console.log("Starting complete card database update from AllPrintings.json...");
+      console.log("MTGSQLive card database update requested...");
       
-      // This downloads AllPrintings.json and processes all cards
-      const result = await mtgJsonService.completeCardDatabaseUpdate();
-      
-      if (!result.success) {
-        return res.status(500).json({
-          success: false,
-          message: result.message
-        });
-      }
-      
-      // Get updated card count
-      const count = await db.select({ count: sql`COUNT(*)` }).from(cards);
-      const cardCount = parseInt(count[0].count as string, 10);
-      
-      return res.status(200).json({
-        success: true,
-        message: `Complete card database update successful. The database now contains ${cardCount} cards.`,
-        cardCount
+      // Enforce MTGSQLive-only approach - block AllPrintings.json processing
+      return res.status(400).json({
+        success: false,
+        message: "AllPrintings.json processing is blocked - system uses MTGSQLive PostgreSQL schema only",
+        note: "MTGSQLive import requires psql command-line tools not available on Railway",
+        recommendation: "Use existing card data or import via PostgreSQL tools in local environment",
+        mtgSQLiveOnly: true
       });
     } catch (error: any) {
       console.error("Error in complete card database update:", error);
@@ -1627,64 +1609,54 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  // Comprehensive MTGJSON import endpoint for Railway deployment
+  // MTGSQLive import endpoint - enforces PostgreSQL-only approach
   app.post("/api/admin/import-mtgjson", async (req, res) => {
     try {
-      console.log("🔄 Starting comprehensive MTGJSON import for Railway...");
+      console.log("🔄 MTGSQLive import request received...");
       
-      const { MTGJSONImportService } = await import('./mtg/mtgjson-import-service');
-      const importService = MTGJSONImportService.getInstance();
-      
-      // For Railway, we'll trigger the complete database update
-      const { MTGJsonService } = await import('./mtg/mtgjson-service');
-      const mtgService = MTGJsonService.getInstance();
-      
-      await mtgService.completeCardDatabaseUpdate();
-      
-      // Get statistics
-      const stats = await importService.getImportStats();
+      // Enforce MTGSQLive-only rule - no AllPrintings.json processing
+      const { mtgSQLiveService } = await import('./mtg/mtgsqlive-import-service-fixed');
+      const result = await mtgSQLiveService.importFromMTGJSON();
       
       res.json({
-        success: true,
-        message: "MTGJSON import completed successfully",
-        stats: stats
+        success: result.success,
+        message: result.message,
+        note: "MTGSQLive uses official PostgreSQL schema only - no JSON file processing"
       });
       
     } catch (error: any) {
-      console.error("Error importing MTGJSON:", error);
+      console.error("MTGSQLive import blocked:", error);
       res.status(500).json({
         success: false,
-        message: "MTGJSON import failed",
-        error: error.message
+        message: "MTGSQLive import requires psql tools not available on Railway",
+        error: error.message,
+        note: "System enforces MTGSQLive PostgreSQL schema only"
       });
     }
   });
 
-  // Get comprehensive import statistics
+  // MTGSQLive import statistics - PostgreSQL schema only
   app.get("/api/admin/import-stats", async (req, res) => {
     try {
-      const { MTGJSONImportService } = await import('./mtg/mtgjson-import-service');
-      const importService = MTGJSONImportService.getInstance();
+      // Get basic database statistics without AllPrintings.json processing
+      const cardCount = await db.select({ count: sql`count(*)` }).from(sql`cards`);
+      const rulesCount = await db.select({ count: sql`count(*)` }).from(sql`rules`);
       
-      const stats = await importService.getImportStats();
-      
-      if (stats) {
-        res.json({
-          success: true,
-          stats: stats
-        });
-      } else {
-        res.status(404).json({
-          success: false,
-          message: "No import statistics available"
-        });
-      }
+      res.json({
+        success: true,
+        stats: {
+          totalCards: Number(cardCount[0]?.count || 0),
+          totalRules: Number(rulesCount[0]?.count || 0),
+          dataSource: "MTGSQLive PostgreSQL schema only",
+          note: "AllPrintings.json statistics not available - system uses MTGSQLive approach"
+        }
+      });
       
     } catch (error: any) {
-      console.error("Error getting import stats:", error);
+      console.error("Error getting MTGSQLive stats:", error);
       res.status(500).json({
         success: false,
-        message: "Failed to get import statistics",
+        message: "Failed to get MTGSQLive statistics",
         error: error.message
       });
     }
