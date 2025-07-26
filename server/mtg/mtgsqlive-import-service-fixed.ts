@@ -62,13 +62,13 @@ export class MTGSQLiveService {
         return { success: true, message: 'Database is already up to date' };
       }
 
-      // Railway doesn't have psql available, so use JSON import approach
-      console.log('📋 Railway environment detected - using JSON import method');
-      console.log('📥 Importing MTGJSON data via JavaScript...');
+      // Railway doesn't have psql available - MTGSQLive approach not supported
+      console.log('📋 Railway environment detected - MTGSQLive PostgreSQL import requires psql');
+      console.log('❌ MTGSQLive import skipped - Railway containers do not support psql/xz tools');
+      console.log('💡 For Railway deployment, card data must be imported via other methods');
       
-      // Use the existing MTGJSON service for Railway deployment
-      const { mtgJsonService } = await import('./mtgjson-service');
-      await mtgJsonService.completeCardDatabaseUpdate();
+      // Don't attempt AllPrintings.json import - stick to MTGSQLive only
+      throw new Error('MTGSQLive PostgreSQL import requires psql command-line tool not available on Railway');
       
       // Update metadata to mark successful import
       await this.updateMetadata();

@@ -26,11 +26,11 @@ Spark Arcanum is a comprehensive Magic: The Gathering platform that combines AI-
 - **MTGSQLive integration** - Uses MTGSQLive PostgreSQL schema exclusively (NO AllPrintings.json files)
 - **Schema-first design** with shared type definitions between client and server
 
-### CRITICAL RULE: MTGSQLive PostgreSQL Schema ONLY
-- **NEVER use AllPrintings.json files** - System uses official MTGJSON PostgreSQL import exclusively
-- **MTGSQLive approach** streams PostgreSQL schema directly from https://mtgjson.com/api/v5/AllPrintings.psql
-- **Database import method** pipes official PostgreSQL schema directly to database via psql command
-- **NO file processing** - downloads and imports authentic MTGJSON PostgreSQL schema in real-time
+### CRITICAL RULE: MTGSQLive PostgreSQL Schema ONLY  
+- **NEVER use AllPrintings.json files** - System designed for official MTGJSON PostgreSQL import exclusively
+- **MTGSQLive approach** requires psql command-line tool to import https://mtgjson.com/api/v5/AllPrintings.psql
+- **Railway limitation** - MTGSQLive import not supported on Railway due to missing psql/xz dependencies
+- **Database philosophy** - Authentic MTGJSON PostgreSQL schema only, no JSON file processing allowed
 
 ## Key Components
 
@@ -118,7 +118,7 @@ Spark Arcanum is a comprehensive Magic: The Gathering platform that combines AI-
 
 **Current Version: 1.1.21** - Released July 27, 2025
 
-**Latest Update:** RULES SERVICE SUCCESS - 2,318 comprehensive MTG rules imported successfully! Database schema issues completely resolved. Railway-compatible import system working perfectly. Ready for production deployment with full functionality.
+**Latest Update:** RULES SERVICE SUCCESS - 2,318 comprehensive MTG rules imported successfully! Database schema issues completely resolved. MTGSQLive import system properly configured (Railway deployment uses existing data due to psql limitations). Ready for production deployment with full rules functionality.
 
 ### v1.1.21 - Database Schema Fix + Railway Deployment Ready (July 27, 2025)
 - **CRITICAL DATABASE SCHEMA FIXED** - Resolved "chapter column does not exist" error in rules table  

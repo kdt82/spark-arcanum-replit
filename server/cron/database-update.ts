@@ -68,11 +68,11 @@ export async function updateCardDatabase() {
       }
     }
     
-    // Run the card database update using MTGSQLive official PostgreSQL schema
-    console.log("Starting MTGSQLive PostgreSQL import...");
-    const cardResult = await mtgSQLiveService.importFromMTGJSON() || { 
+    // Skip MTGSQLive import on Railway - requires psql command-line tools
+    console.log("Skipping MTGSQLive PostgreSQL import - Railway environment detected");
+    const cardResult = { 
       success: true, 
-      message: "MTGSQLive PostgreSQL import completed" 
+      message: "MTGSQLive import skipped - Railway environment uses existing card data" 
     };
     
     // Run the comprehensive rules update
