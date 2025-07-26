@@ -225,34 +225,6 @@ export class MTGSQLiveService {
   }
 
 
-          } else {
-            console.error('❌ psql import failed:', errorOutput);
-            reject(new Error(`psql import failed with code ${code}: ${errorOutput}`));
-          }
-        });
-
-        psql.on('error', (error) => {
-          reject(new Error(`Failed to start psql: ${error.message}`));
-        });
-      });
-      
-    } catch (error: any) {
-      console.error('❌ MTGSQLive import failed:', error);
-      return { success: false, message: `Import failed: ${error.message}` };
-    }
-  }
-
-  /**
-   * Get the current card count from the database
-   */
-  private async getCardCount(): Promise<number> {
-    try {
-      const result = await db.execute(sql`SELECT COUNT(*) as count FROM cards`);
-      return result.rows ? Number(result.rows[0]?.count || 0) : 0;
-    } catch (error) {
-      return 0;
-    }
-  }
 }
 
 export const mtgSQLiveService = new MTGSQLiveService();
