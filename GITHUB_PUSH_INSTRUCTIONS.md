@@ -87,9 +87,9 @@ Railway will automatically:
 - No data contamination between environments
 - Official MTGJSON import on Railway startup
 
-### Step 3: Add Environment Variables
+### Step 3: Add Environment Variables (CRITICAL - App won't work without these)
 
-In Railway Dashboard → Variables tab, add:
+In Railway Dashboard → Variables tab, add these **required** variables:
 
 ```bash
 NODE_ENV=production
@@ -97,11 +97,23 @@ SESSION_SECRET=your-secure-64-character-session-key-here
 OPENAI_API_KEY=your-openai-api-key-here
 ```
 
+**IMPORTANT: Your app is currently deployed but missing these variables, causing authentication and AI features to fail.**
+
 **Generate a secure SESSION_SECRET:**
 ```bash
 # Run this in any terminal to generate a secure key
 openssl rand -base64 64
+# Example output: bSIbVUnQIugnagz8p9EGPRglyqeT0fcy9gAl9XeTKAVEokdEjbAiqpiRhqLqePy6zeIKlc+37LjbpWVEgJn5Pg==
 ```
+
+**Get your OPENAI_API_KEY:**
+1. Go to https://platform.openai.com/api-keys
+2. Create a new API key
+3. Copy the key starting with `sk-`
+
+**After adding variables in Railway:**
+1. Click "Redeploy" to restart with new environment variables
+2. Monitor logs for successful startup
 
 ### Step 4: Add PostgreSQL Database (Recommended)
 
@@ -152,11 +164,14 @@ Railway provides a URL like:
 ## Troubleshooting Railway Deployment
 
 ### Environment Variable Issues
-If variables show "NOT SET" in logs:
+If variables show "NOT SET" in logs (like your current deployment):
 
-1. **Delete and re-add variables** in Railway dashboard
-2. **Force redeploy**: Railway → Deployments → "Redeploy"
-3. **Check logs**: Look for "Railway Environment Variable Loader" output
+1. **Add missing variables** in Railway dashboard → Variables tab
+2. **Required variables**: `SESSION_SECRET` and `OPENAI_API_KEY` 
+3. **Force redeploy**: Railway → Deployments → "Redeploy"
+4. **Check logs**: Look for "Railway Environment Variable Loader" output showing all variables as "✅ Set"
+
+**Current Status**: Your app deployed successfully but authentication and AI features are disabled due to missing environment variables.
 
 ### Database Connection Issues
 If database fails to connect:
