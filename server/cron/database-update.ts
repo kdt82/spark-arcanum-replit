@@ -1,5 +1,5 @@
 import { mtgJsonService } from "../mtg/mtgjson-service";
-import { mtgSQLiveService } from "../mtg/mtgsqlive-import-service";
+import { mtgSQLiveService } from "../mtg/mtgsqlive-import-service-fixed";
 import { db } from "../db";
 import { dbMetadata } from "@shared/schema";
 import { eq, sql } from "drizzle-orm";

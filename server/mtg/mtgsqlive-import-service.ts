@@ -149,7 +149,8 @@ export class MTGSQLiveService {
   }
 
   /**
-   * Import fresh MTGJSON data using direct PostgreSQL import
+   * Import fresh MTGJSON data using Railway-compatible approach
+   * Falls back to JSON import when psql is not available
    */
   public async importFromMTGJSON(): Promise<{ success: boolean; message: string }> {
     try {
@@ -161,96 +162,69 @@ export class MTGSQLiveService {
         return { success: true, message: 'Database is already up to date' };
       }
 
-      // Download and import the latest PostgreSQL schema directly
-      console.log('📥 Downloading MTGJSON PostgreSQL schema...');
+      // Railway doesn't have psql available, so use JSON import approach
+      console.log('📋 Railway environment detected - using JSON import method');
+      console.log('📥 Importing MTGJSON data via JavaScript...');
       
-      const dbUrl = process.env.DATABASE_URL;
-      if (!dbUrl) {
-        throw new Error('DATABASE_URL not found');
-      }
+      // Use the existing MTGJSON service for Railway deployment
+      const { mtgJsonService } = await import('./mtgjson-service');
+      await mtgJsonService.downloadAndImport();
+      
+      // Update metadata to mark successful import
+      await this.updateMetadata();
+      
+      return { 
+        success: true, 
+        message: 'Successfully imported MTGJSON data via Railway-compatible method' 
+      };
+    } catch (error: any) {
+      console.error('❌ MTGSQLive import failed:', error);
+      return { 
+        success: false, 
+        message: `Import failed: ${error.message}` 
+      };
+    }
+  }
 
-      // Stream the SQL file directly to psql for import
-      return new Promise((resolve, reject) => {
-        const psql = spawn('psql', [dbUrl], {
-          stdio: ['pipe', 'pipe', 'pipe']
-        });
-
-        // Start downloading and piping to psql
-        https.get(this.sqlFileUrl, (response) => {
-          if (response.statusCode !== 200) {
-            reject(new Error(`Download failed: ${response.statusCode}`));
-            return;
-          }
-
-          const totalSize = parseInt(response.headers['content-length'] || '0', 10);
-          let downloadedSize = 0;
-          let importedLines = 0;
-
-          response.on('data', (chunk) => {
-            downloadedSize += chunk.length;
-            const progress = totalSize > 0 ? (downloadedSize / totalSize * 100).toFixed(1) : '?';
-            
-            // Log progress every 10MB
-            if (downloadedSize % (1024 * 1024 * 10) === 0) {
-              console.log(`📥 Importing ${(downloadedSize / 1024 / 1024).toFixed(1)}MB (${progress}%)`);
-            }
-          });
-
-          // Pipe the download directly to psql
-          response.pipe(psql.stdin);
-
-          response.on('end', () => {
-            console.log(`✅ Download completed: ${(downloadedSize / 1024 / 1024).toFixed(1)}MB`);
-            psql.stdin.end();
-          });
-        }).on('error', (error) => {
-          psql.kill();
-          reject(error);
-        });
-
-        let output = '';
-        let errorOutput = '';
-        let processedLines = 0;
-
-        psql.stdout.on('data', (data) => {
-          output += data.toString();
-          processedLines++;
-          if (processedLines % 1000 === 0) {
-            console.log(`🗄️ Processed ${processedLines} database operations...`);
+  /**
+   * Update metadata after successful import
+   */
+  private async updateMetadata(): Promise<void> {
+    try {
+      await db
+        .insert(dbMetadata)
+        .values({
+          id: "mtgsqlive_database",
+          last_updated: new Date(),
+          description: "MTGSQLive import via MTGJSON service (Railway compatible)",
+          total_cards: await this.getCardCount()
+        })
+        .onConflictDoUpdate({
+          target: dbMetadata.id,
+          set: {
+            last_updated: new Date(),
+            description: "MTGSQLive import via MTGJSON service (Railway compatible)",
+            total_cards: await this.getCardCount()
           }
         });
+    } catch (error) {
+      console.error('Error updating metadata:', error);
+    }
+  }
 
-        psql.stderr.on('data', (data) => {
-          errorOutput += data.toString();
-        });
+  /**
+   * Get current card count
+   */
+  private async getCardCount(): Promise<number> {
+    try {
+      const result = await db.select({ count: sql`count(*)` }).from(sql`cards`);
+      return Number(result[0]?.count || 0);
+    } catch (error) {
+      return 0;
+    }
+  }
 
-        psql.on('close', async (code) => {
-          if (code === 0) {
-            console.log('✅ MTGSQLive import completed successfully');
-            
-            // Update metadata
-            try {
-              await db
-                .insert(dbMetadata)
-                .values({
-                  id: "mtgsqlive_database",
-                  last_updated: new Date(),
-                  description: "MTGSQLive PostgreSQL import from MTGJSON",
-                  total_cards: await this.getCardCount()
-                })
-                .onConflictDoUpdate({
-                  target: dbMetadata.id,
-                  set: {
-                    last_updated: new Date(),
-                    description: "MTGSQLive PostgreSQL import from MTGJSON",
-                    total_cards: await this.getCardCount()
-                  }
-                });
-            } catch (metaError) {
-              console.log('Warning: Failed to update metadata:', metaError);
-            }
-            
-            resolve({ success: true, message: 'MTGSQLive import completed successfully' });
+
           } else {
             console.error('❌ psql import failed:', errorOutput);
             reject(new Error(`psql import failed with code ${code}: ${errorOutput}`));

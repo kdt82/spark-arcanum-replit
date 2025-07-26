@@ -1695,28 +1695,14 @@ export async function registerRoutes(app: Express): Promise<Server> {
     try {
       console.log("🚀 Starting MTGSQLive PostgreSQL import...");
       
-      const { mtgSQLiveService } = await import('./mtg/mtgsqlive-import-service');
+      const { mtgSQLiveService } = await import('./mtg/mtgsqlive-import-service-fixed');
       
-      // Check if update is needed
-      const shouldUpdate = await mtgSQLiveService.shouldUpdate();
-      if (!shouldUpdate) {
-        return res.json({
-          success: true,
-          message: "MTGSQLive database is already current",
-          timestamp: new Date().toISOString()
-        });
-      }
-      
-      // Start the MTGSQLive import process
-      await mtgSQLiveService.setupMTGSQLiveDatabase();
-      
-      // Get statistics
-      const stats = await mtgSQLiveService.getImportStats();
+      // Start the Railway-compatible import process
+      const result = await mtgSQLiveService.importFromMTGJSON();
       
       res.json({
-        success: true,
-        message: "MTGSQLive import completed successfully",
-        stats: stats,
+        success: result.success,
+        message: result.message,
         timestamp: new Date().toISOString()
       });
     } catch (error: any) {
