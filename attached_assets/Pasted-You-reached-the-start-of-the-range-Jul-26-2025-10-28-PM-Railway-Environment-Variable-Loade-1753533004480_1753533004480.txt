@@ -1,0 +1,135 @@
+You reached the start of the range → Jul 26, 2025, 10:28 PM
+
+🚂 Railway Environment Variable Loader
+
+📋 Checking Railway environment detection...
+
+   Railway Platform Detected: true
+
+   Railway Environment: production
+
+🚀 Starting Spark Arcanum server...
+
+12:28:38 PM [express] 🎯 Spark Arcanum serving on port 8080
+
+12:28:38 PM [express] 🌐 Health check: http://localhost:8080/api/health
+
+🗄️ Database detected - will initialize card data
+
+Error initializing Rules Service: error: relation "rules" does not exist
+
+    at /app/node_modules/pg-pool/index.js:45:11
+
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+
+    at async file:///app/node_modules/drizzle-orm/node-postgres/session.js:83:22
+
+    at async _RulesService.initialize (file:///app/dist/index.js:3765:29) {
+
+  length: 105,
+
+  severity: 'ERROR',
+
+  code: '42P01',
+
+  detail: undefined,
+
+  hint: undefined,
+
+  position: '146',
+
+  internalPosition: undefined,
+
+  internalQuery: undefined,
+
+  where: undefined,
+
+  schema: undefined,
+
+  table: undefined,
+
+  column: undefined,
+
+  dataType: undefined,
+
+  constraint: undefined,
+
+  file: 'parse_relation.c',
+
+  line: '1449',
+
+  routine: 'parserOpenTable'
+
+}
+
+Error initializing rules service: error: relation "rules" does not exist
+
+    at /app/node_modules/pg-pool/index.js:45:11
+
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+
+    at async file:///app/node_modules/drizzle-orm/node-postgres/session.js:83:22
+
+    at async _RulesService.initialize (file:///app/dist/index.js:3765:29) {
+
+  length: 105,
+
+  severity: 'ERROR',
+
+  code: '42P01',
+
+  detail: undefined,
+
+  hint: undefined,
+
+  position: '146',
+
+  internalPosition: undefined,
+
+  internalQuery: undefined,
+
+  where: undefined,
+
+  schema: undefined,
+
+  table: undefined,
+
+  column: undefined,
+
+  dataType: undefined,
+
+  constraint: undefined,
+
+  file: 'parse_relation.c',
+
+  line: '1449',
+
+  routine: 'parserOpenTable'
+
+}
+
+12:28:38 PM [express] GET /api/health 200 in 7ms :: {"status":"healthy","timestamp":"2025-07-26T12:28…
+
+🚨 Railway internal database detected - testing connection...
+
+🔧 Checking database schema...
+
+❌ Error initializing database schema: TypeError: existingTables.map is not a function
+
+    at initializeDatabaseSchema (file:///app/dist/index.js:2748:39)
+
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+
+    at async Timeout._onTimeout (file:///app/dist/index.js:6850:43)
+
+⚠️ Railway database connection failed: Failed to initialize database schema
+
+📋 Database initialization skipped - Railway PostgreSQL service not accessible
+
+   This is normal if:
+
+   1. PostgreSQL service is not running in Railway
+
+   2. DATABASE_URL points to internal service that's not accessible
+
+   3. App is running in development mode with Railway variables

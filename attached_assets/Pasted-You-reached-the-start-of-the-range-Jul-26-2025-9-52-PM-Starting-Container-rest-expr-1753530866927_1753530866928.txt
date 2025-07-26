@@ -1,0 +1,129 @@
+You reached the start of the range → Jul 26, 2025, 9:52 PM
+
+Starting Container
+
+ 
+
+> rest-express@1.0.0 start
+
+> NODE_ENV=production node dist/index.js
+
+ 
+
+🔍 Database Environment Check:
+
+   DATABASE_URL exists: false
+
+   DATABASE_URL length: 0
+
+   NODE_ENV: production
+
+⚠️ DATABASE_URL not set - using mock database for Railway deployment
+
+📋 To enable full database features:
+
+   1. Add PostgreSQL service in Railway
+
+   2. Set DATABASE_URL environment variable
+
+   3. Redeploy the application
+
+🔄 Using mock database
+
+📋 DatabaseStorage created - initialization deferred
+
+🔍 IMMEDIATE Environment Check (Raw Process):
+
+   DATABASE_URL: NOT FOUND
+
+   SESSION_SECRET: NOT FOUND
+
+   OPENAI_API_KEY: NOT FOUND
+
+   NODE_ENV: production
+
+   PORT: 8080
+
+   Railway vars: [
+
+  'RAILWAY_REPLICA_REGION',
+
+  'RAILWAY_PUBLIC_DOMAIN',
+
+  'RAILWAY_REPLICA_ID',
+
+  'RAILWAY_GIT_AUTHOR',
+
+  'RAILWAY_GIT_BRANCH',
+
+  'RAILWAY_SERVICE_WEB_URL',
+
+  'RAILWAY_STATIC_URL',
+
+  'RAILWAY_SERVICE_NAME',
+
+  'RAILWAY_PRIVATE_DOMAIN',
+
+  'RAILWAY_PROJECT_NAME',
+
+  'RAILWAY_SERVICE_ID',
+
+  'RAILWAY_GIT_COMMIT_MESSAGE',
+
+  'RAILWAY_ENVIRONMENT_NAME',
+
+  'RAILWAY_DEPLOYMENT_ID',
+
+  'RAILWAY_PROJECT_ID',
+
+  'RAILWAY_GIT_REPO_OWNER',
+
+  'RAILWAY_ENVIRONMENT',
+
+  'RAILWAY_ENVIRONMENT_ID',
+
+  'RAILWAY_BETA_ENABLE_RUNTIME_V2',
+
+  'RAILWAY_SNAPSHOT_ID',
+
+  'RAILWAY_GIT_COMMIT_SHA',
+
+  'RAILWAY_GIT_REPO_NAME'
+
+]
+
+   All env keys count: 55
+
+🔍 DEEP Environment Debug:
+
+   Environment keys containing 'DATABASE': []
+
+   Environment keys containing 'SESSION': []
+
+   Environment keys containing 'OPENAI': []
+
+   Raw DATABASE_URL value: undefined
+
+   Raw SESSION_SECRET value: undefined
+
+🔧 Railway Environment Variable Fix - Forcing variable injection
+
+   On Railway - checking variable injection
+
+   Current variable state:
+
+     DATABASE_URL: NOT SET
+
+     SESSION_SECRET: NOT SET
+
+     OPENAI_API_KEY: NOT SET
+
+     NODE_ENV: SET (10 chars)
+
+     PORT: SET (4 chars)
+
+   SESSION_SECRET missing - checking alternatives
+
+   Generated fallback SESSION_SECRET
+
+   Final variable state:

@@ -1,0 +1,133 @@
+    _bufferedAmount: 0,
+
+    _isServer: false,
+
+    _redirects: 0,
+
+    _autoPong: true,
+
+    _url: 'wss://postgres.railway.internal/v2',
+
+    _req: null,
+
+    [Symbol(shapeMode)]: false,
+
+    [Symbol(kCapture)]: false
+
+  },
+
+  [Symbol(kType)]: 'error',
+
+  [Symbol(kError)]: Error: connect ECONNREFUSED fd12:a307:a1b2:0:2000:47:5270:3bf:443
+
+      at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1611:16) {
+
+    errno: -111,
+
+    code: 'ECONNREFUSED',
+
+    syscall: 'connect',
+
+    address: 'fd12:a307:a1b2:0:2000:47:5270:3bf',
+
+    port: 443
+
+  },
+
+  [Symbol(kMessage)]: 'connect ECONNREFUSED fd12:a307:a1b2:0:2000:47:5270:3bf:443'
+
+}
+
+11:56:35 AM [express] GET /api/health 200 in 6ms :: {"status":"healthy","timestamp":"2025-07-26T11:56…
+
+📚 Starting card database initialization...
+
+Starting scheduled database update...
+
+Error updating card database: ErrorEvent {
+
+  [Symbol(kTarget)]: WebSocket {
+
+    _events: [Object: null prototype] {
+
+      error: [Function],
+
+      message: [Function],
+
+      close: [Function],
+
+      open: [Function]
+
+    },
+
+    _eventsCount: 4,
+
+    _maxListeners: undefined,
+
+    _binaryType: 'arraybuffer',
+
+    _closeCode: 1006,
+
+    _closeFrameReceived: false,
+
+    _closeFrameSent: false,
+
+    _closeMessage: <Buffer >,
+
+    _closeTimer: null,
+
+    _errorEmitted: true,
+
+    _extensions: {},
+
+    _paused: false,
+
+    _protocol: '',
+
+    _readyState: 3,
+
+    _receiver: null,
+
+    _sender: null,
+
+    _socket: null,
+
+    _bufferedAmount: 0,
+
+    _isServer: false,
+
+    _redirects: 0,
+
+    _autoPong: true,
+
+    _url: 'wss://postgres.railway.internal/v2',
+
+    _req: null,
+
+    [Symbol(shapeMode)]: false,
+
+    [Symbol(kCapture)]: false
+
+  },
+
+  [Symbol(kType)]: 'error',
+
+  [Symbol(kError)]: Error: connect ECONNREFUSED fd12:a307:a1b2:0:2000:47:5270:3bf:443
+
+      at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1611:16) {
+
+    errno: -111,
+
+    code: 'ECONNREFUSED',
+
+    syscall: 'connect',
+
+    address: 'fd12:a307:a1b2:0:2000:47:5270:3bf',
+
+    port: 443
+
+  },
+
+  [Symbol(kMessage)]: 'connect ECONNREFUSED fd12:a307:a1b2:0:2000:47:5270:3bf:443'
+
+}

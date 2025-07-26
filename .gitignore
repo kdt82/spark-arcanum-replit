@@ -1,0 +1,123 @@
+# Dependencies
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Environment variables
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Database files and imports (Railway regenerates these)
+*.db
+*.sqlite
+*.sqlite3
+*.psql
+*.psql.xz
+*.sql.gz
+*.dump
+
+# Logs
+logs
+*.log
+
+# Runtime data
+pids
+*.pid
+*.seed
+*.pid.lock
+
+# Coverage directory used by tools like istanbul
+coverage/
+
+# Build outputs
+dist/
+build/
+.vite/
+
+# Editor directories and files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Temporary files
+tmp/
+temp/
+
+# User content and storage directories (Railway handles these)
+uploads/
+uploads/*
+temp/
+temp/*
+storage/
+storage/*
+
+# Data directories and files (database content - Railway will regenerate)
+data/
+data/*
+data/AllPrintings.json
+data/AllPrintings.psql*
+data/AtomicCards.json
+data/*.json
+data/*.psql
+data/*.xz
+data/*.sql
+
+# Backup files and archives
+backups/
+*.bak
+*.tar.gz
+*.zip
+spark-arcanum-*.tar.gz
+spark-arcanum-github.tar.gz
+
+# Old deployment files and versions
+deploy-v1.1.5.sh
+deploy-v1.1.6.sh
+deploy-v1.1.7.sh
+
+# Deployment and build scripts
+deploy-to-github.js
+github-*.sh
+push-to-*.sh
+
+# Response and temporary files
+response.json
+response.txt
+generated-icon.png
+
+# Documentation that gets consolidated into README
+CHANGELOG-*.md
+DEPLOYMENT.md
+PUSH_INSTRUCTIONS.md
+
+# Large attached assets and temporary files (Railway doesn't need these)
+attached_assets/image_175*.png
+attached_assets/image_174*.png
+attached_assets/screencapture-*.png
+attached_assets/*.txt
+attached_assets/Pasted-*.txt
+
+# MTGSQLive temporary files and caches
+mtgsqlive/
+*.mtgjson
+cache/
+*.cache
+
+# Storage backup files
+server/storage*.bak
+server/storage-new.ts

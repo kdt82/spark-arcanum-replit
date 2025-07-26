@@ -1,0 +1,9 @@
+[build]
+builder = "nixpacks"
+
+[deploy]
+healthcheckPath = "/api/health"
+healthcheckTimeout = 60
+restartPolicy = "on-failure"
+
+# Railway will inject environment variables from dashboard

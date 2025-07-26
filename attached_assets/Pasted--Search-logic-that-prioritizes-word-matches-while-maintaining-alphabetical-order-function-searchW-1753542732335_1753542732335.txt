@@ -1,0 +1,119 @@
+// Search logic that prioritizes word matches while maintaining alphabetical order
+function searchWithPriority(items, searchTerm) {
+    if (!searchTerm || searchTerm.trim() === '') {
+        return items.sort();
+    }
+
+    const searchWords = searchTerm.toLowerCase().trim().split(/\s+/);
+    const results = [];
+
+    // Calculate priority score for each item
+    items.forEach(item => {
+        const itemLower = item.toLowerCase();
+        let totalMatches = 0;
+        let hasAllWords = true;
+
+        // Check if item contains all search words
+        for (const word of searchWords) {
+            const wordCount = (itemLower.match(new RegExp(word, 'g')) || []).length;
+            if (wordCount === 0) {
+                hasAllWords = false;
+                break;
+            }
+            totalMatches += wordCount;
+        }
+
+        // Only include items that contain all search words
+        if (hasAllWords) {
+            results.push({
+                item: item,
+                priority: totalMatches,
+                itemLower: itemLower
+            });
+        }
+    });
+
+    // Sort by priority (descending), then alphabetically (ascending)
+    results.sort((a, b) => {
+        if (a.priority !== b.priority) {
+            return b.priority - a.priority; // Higher priority first
+        }
+        return a.item.localeCompare(b.item); // Then alphabetical
+    });
+
+    // Return just the item names
+    return results.map(result => result.item);
+}
+
+// Example usage:
+const cardNames = [
+    "Argivian Blacksmith",
+    "Ballad of the Black Flag", 
+    "Bane Alley Blackguard",
+    "Circle of Protection: Black",
+    "Dakkon Blackblade",
+    "Ob Nixilis of the Black Oath",
+    "Black Lotus",
+    "Lightning Bolt",
+    "Serra Angel"
+];
+
+// Test the search
+console.log("Search for 'black':");
+console.log(searchWithPriority(cardNames, "black"));
+
+console.log("\nSearch for 'black oath':");
+console.log(searchWithPriority(cardNames, "black oath"));
+
+// Alternative version with more granular priority scoring
+function advancedSearchWithPriority(items, searchTerm) {
+    if (!searchTerm || searchTerm.trim() === '') {
+        return items.sort();
+    }
+
+    const searchWords = searchTerm.toLowerCase().trim().split(/\s+/);
+    const results = [];
+
+    items.forEach(item => {
+        const itemLower = item.toLowerCase();
+        let score = 0;
+        let hasAllWords = true;
+
+        for (const word of searchWords) {
+            if (!itemLower.includes(word)) {
+                hasAllWords = false;
+                break;
+            }
+
+            // Higher score for exact word matches vs partial matches
+            const exactWordRegex = new RegExp(`\\b${word}\\b`, 'g');
+            const partialMatches = (itemLower.match(new RegExp(word, 'g')) || []).length;
+            const exactMatches = (itemLower.match(exactWordRegex) || []).length;
+            
+            score += exactMatches * 10 + (partialMatches - exactMatches) * 5;
+            
+            // Bonus for matches at the beginning of the string
+            if (itemLower.startsWith(word)) {
+                score += 20;
+            }
+        }
+
+        if (hasAllWords) {
+            results.push({
+                item: item,
+                score: score,
+                itemLower: itemLower
+            });
+        }
+    });
+
+    // Sort by score (descending), then alphabetically
+    results.sort((a, b) => {
+        if (a.score !== b.score) {
+            return b.score - a.score;
+        }
+        return a.item.localeCompare(b.item);
+    });
+
+    return results.map(result => result.item);
+}

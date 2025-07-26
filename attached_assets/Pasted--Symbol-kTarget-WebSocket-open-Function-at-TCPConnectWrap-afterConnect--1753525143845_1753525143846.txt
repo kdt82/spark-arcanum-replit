@@ -1,0 +1,147 @@
+  [Symbol(kTarget)]: WebSocket {
+
+      open: [Function]
+
+      at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1611:16) {
+
+    _events: [Object: null prototype] {
+
+    errno: -111,
+
+    },
+
+    code: 'ECONNREFUSED',
+
+      error: [Function],
+
+    _eventsCount: 4,
+
+    syscall: 'connect',
+
+      message: [Function],
+
+    _maxListeners: undefined,
+
+    address: 'fd12:a307:a1b2:0:2000:47:5270:3bf',
+
+      close: [Function],
+
+    port: 443
+
+    _binaryType: 'arraybuffer',
+
+      open: [Function]
+
+    _closeCode: 1006,
+
+  },
+
+    },
+
+  [Symbol(kMessage)]: 'connect ECONNREFUSED fd12:a307:a1b2:0:2000:47:5270:3bf:443'
+
+    _closeFrameReceived: false,
+
+}
+
+    _eventsCount: 4,
+
+    _closeFrameSent: false,
+
+    _maxListeners: undefined,
+
+    _closeMessage: <Buffer >,
+
+    _binaryType: 'arraybuffer',
+
+    _closeTimer: null,
+
+    _closeCode: 1006,
+
+    _errorEmitted: true,
+
+    _closeFrameReceived: false,
+
+    _extensions: {},
+
+    _closeFrameSent: false,
+
+    _paused: false,
+
+    _closeMessage: <Buffer >,
+
+    _protocol: '',
+
+    _closeTimer: null,
+
+    _readyState: 3,
+
+    _errorEmitted: true,
+
+    _extensions: {},
+
+    _receiver: null,
+
+    _sender: null,
+
+    _paused: false,
+
+    _protocol: '',
+
+    _socket: null,
+
+    _readyState: 3,
+
+    _bufferedAmount: 0,
+
+    _receiver: null,
+
+    _isServer: false,
+
+    _sender: null,
+
+    _redirects: 0,
+
+    _autoPong: true,
+
+    _socket: null,
+
+    _url: 'wss://postgres.railway.internal/v2',
+
+    _bufferedAmount: 0,
+
+    _req: null,
+
+    _isServer: false,
+
+    _redirects: 0,
+
+    _autoPong: true,
+
+    _url: 'wss://postgres.railway.internal/v2',
+
+    _req: null,
+
+    [Symbol(shapeMode)]: false,
+
+    [Symbol(kCapture)]: false
+
+  },
+
+  [Symbol(kType)]: 'error',
+
+  [Symbol(kError)]: Error: connect ECONNREFUSED fd12:a307:a1b2:0:2000:47:5270:3bf:443
+
+      at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1611:16) {
+
+    errno: -111,
+
+    code: 'ECONNREFUSED',
+
+    syscall: 'connect',
+
+    address: 'fd12:a307:a1b2:0:2000:47:5270:3bf',
+
+    port: 443
+
+  },

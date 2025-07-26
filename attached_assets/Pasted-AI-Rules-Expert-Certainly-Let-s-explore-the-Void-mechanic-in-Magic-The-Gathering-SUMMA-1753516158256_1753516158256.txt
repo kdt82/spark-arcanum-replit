@@ -1,0 +1,25 @@
+AI Rules Expert:
+Certainly! Let's explore the "Void" mechanic in Magic: The Gathering.
+
+### SUMMARY:
+The "Void" mechanic is not a keyword or ability in Magic: The Gathering. It is important to clarify that "Void" might refer to specific card names or effects that involve the concept of "void" in their flavor or mechanics, but it is not a standardized game mechanic like "Devoid."
+
+### CARD MECHANICS:
+Since "Void" is not a recognized keyword or ability, there is no specific card text or mechanic associated with it. However, there are cards with "Void" in their name or flavor text, such as the card "Void" from the set "Invasion," which has its own unique effect.
+
+For example, the card "Void" from "Invasion" has the following text:
+- **Void**: "Choose a number. Destroy all artifacts and creatures with mana value equal to the chosen number. Then target player reveals their hand and discards all nonland cards with mana value equal to the chosen number."
+
+### RULES APPLICATION:
+Since "Void" is not a keyword or ability, there are no specific rules in the comprehensive rules that apply to a "Void" mechanic. Instead, each card with "Void" in its name or text will have its own rules and interactions based on its specific abilities.
+
+### INTERACTION ANALYSIS:
+- **Turn Structure and Phases**: Cards like "Void" are typically played during a player's main phase when they have priority and can cast sorceries.
+- **The Stack**: When a spell like "Void" is cast, it goes on the stack. Players can respond with instants or activated abilities before it resolves.
+- **State-Based Actions**: After "Void" resolves, state-based actions are checked, such as creatures with lethal damage being destroyed.
+- **Timing**: The timing of casting spells like "Void" follows the standard rules for casting sorceries, which is during your main phase when the stack is empty.
+
+### OUTCOME:
+Since "Void" is not a standardized mechanic, the outcome of any card with "Void" in its name or text will depend on the specific abilities and effects of that card. For example, the card "Void" from "Invasion" allows you to choose a number and destroy artifacts and creatures with that mana value, as well as force a player to discard cards with that mana value from their hand.
+
+If you have a specific card or context in mind involving "Void," please provide more details, and I can offer a more precise explanation based on that card's text and abilities.

@@ -1,0 +1,14 @@
+[phases.setup]
+nixPkgs = ['nodejs-20_x', 'npm-9_x']
+
+[phases.install]
+cmds = ['npm ci']
+
+[phases.build]
+cmds = ['npm run build']
+
+[start]
+cmd = 'node dist/index.js'
+
+# Railway will provide environment variables from dashboard
+# NODE_ENV will be set by Railway automatically
